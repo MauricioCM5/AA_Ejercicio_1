@@ -1,15 +1,68 @@
 #include <iostream>
+#include <cmath>
 using namespace std;
+
+string letras = "abcdefghijklmnopqrstuvwxyz";
+int decipher(char* letter1) {
+	int temp = 0;
+	cout << "wtff pero la letra enviada es: " << *letter1 << "__________\n";
+	for (int i = 0; i < letras.length(); i++) {
+		temp++;
+		if (letras[i] == *letter1) {
+			cout << "TEMPORALITO : " << temp << "-----------\n";
+			break;
+		}
+	}
+
+	return abs(temp - 5);
+
+}
+
+void convertidor(string* stn, int salto) {
+
+	int indexes[1000] = { 1,2,3 };
+	int contador = stn->length(); 
+
+	for (int i = 0; i < (*stn).length(); i++) {
+		for (int j = 0; j < letras.length(); j++) {
+			if ((*stn)[i] == ' ') {
+				indexes[i] = 100;  break;
+			}
+			else if (letras[j] == (*stn)[i]) {
+				indexes[i] = j ;  break;
+			}
+		}
+
+	}
+	cout << "--------------\n\n";
+	
+	for (int i = 0; i < contador; i++) {
+		cout << indexes[i] << "  ";
+ 	}
+	
+	int total_letras = letras.length();
+
+	cout << "\n\n\n";
+
+	for (int i = 0; i < contador; i++) {
+		if (indexes[i] == 100) { cout << " "; }
+		else if (indexes[i] < salto ) {
+			cout << letras[indexes[i] + total_letras - salto ];
+		}
+		else {
+			cout << letras[indexes[i] - salto ];
+		}
+	}
+	
+
+
+
+}
+
+
 
 int main() {
 
-	int num;
-
-	num = 5;
-
-	int* ptr_num = &num;
-
-	string letras = "abcdefghijklmnopqrstuvwxyz";
 
 	string sentence1 = "lrvmnir bpr sumvbwvr jx bpr lmiwv yjeryrkbi jx qmbm wi bpr";
 	string sentence2 = "xjvni mkd ymibrut jx irhx wi bpr riirkvr jx ymbinlmtmipw utn";
@@ -30,6 +83,11 @@ int main() {
 							sentence6, sentence7, sentence8, sentence9,
 							sentence10, sentence11, sentence12, sentence13 };
 
+	for (int i = 1; i < 13; i++) {
+		sentence1 += sentences[i];
+	}
+
+	/*
 	char common = '.';
 	int contador = 0;
 	int maximo = 0;
@@ -54,7 +112,36 @@ int main() {
 	}
 
 	cout << "Letras mas repetida: " << common << ", num veces: " << maximo << "\n";
+	*/
+	char common = '.';
+	int contador = 0;
+	int maximo = 0;
 
+	for (int i = 0; i < letras.length();i++) {
+		contador = 0;
+		for (int j = 0; j < sentence1.length(); j++) {
+			if (letras[i] == sentence1[j]) {
+				contador++;
+			}
+		}
+		
+		if (contador > maximo) {
+				maximo = contador;
+				common = letras[i];
+		}
+
+		if(contador != 0) cout << "La letra - " << letras[i] << "- : " << contador << "\n";
+
+	}
+
+	
+	char most_common = common;
+	int salto = decipher(&most_common);
+
+	cout << "LETRA MOST COMMON: " << most_common << "\n\n";
+	cout << "El salto de letras desde most common a 'e' es: " << salto << "\n\n";
+
+	convertidor(&sentence1, salto);
 
 	return 0;
 }
